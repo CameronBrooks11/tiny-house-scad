@@ -13,8 +13,6 @@
 //       to the back slope of a house `width` deep
 // All sizes are in inches.
 
-function feet(f) = f * 12;
-
 // Actual sizes of nominal lumber: [name, thickness, depth]
 LUMBER = [
     ["2x4", 1.5, 3.5],
