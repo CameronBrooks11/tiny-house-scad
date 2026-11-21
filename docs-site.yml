@@ -1,1 +1,3 @@
+title: tiny-house-scad
+description: Parametric tiny house frame in OpenSCAD, floor, stud walls and gable roof from any size, with a lumber cut list
 models: src/house.scad

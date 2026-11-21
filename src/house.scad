@@ -70,29 +70,35 @@ RIDGE_TOP = rafter_top(width / 2 - thickness(RIDGE) / 2, H_TOP, pitch, SEAT, raf
 assert(RIDGE_TOP - depth(RIDGE) >= H_TOP + depth(rafter), "the roof is too low for the ceiling ties to pass under the ridge board: raise the pitch or widen the house");
 
 MEMBERS = concat(
-  floor_frame(length, width, joist, spacing, MAX_LEN),
-  floor_sheathing(length, width, Z_SUBFLOOR, subfloor),
-  walls(length, width, Z_WALLS, wall_height, stud, spacing, MAX_LEN),
-  roof_frame(length, width, H_TOP, WALL, rafter, pitch, overhang, spacing, MAX_LEN),
-  roof_sheathing(length, width, H_TOP, WALL, rafter, pitch, overhang, roof_sheet, ridge_vent)
+    floor_frame(length, width, joist, spacing, MAX_LEN),
+    floor_sheathing(length, width, Z_SUBFLOOR, subfloor),
+    walls(length, width, Z_WALLS, wall_height, stud, spacing, MAX_LEN),
+    roof_frame(length, width, H_TOP, WALL, rafter, pitch, overhang, spacing, MAX_LEN),
+    roof_sheathing(length, width, H_TOP, WALL, rafter, pitch, overhang, roof_sheet, ridge_vent)
 );
 
 TOO_LONG = [for (m = MEMBERS) if (!is_sheet(m[1]) && stick_length(m) > MAX_LEN + 1e-6) [m[1], m[2], stick_length(m)]];
-assert(len(TOO_LONG) == 0, str("pieces longer than the longest stock (", MAX_LEN / 12, "'): ", TOO_LONG,
-                               ". Add a longer length to stock_feet or make the house smaller."));
+assert(
+    len(TOO_LONG) == 0, str(
+        "pieces longer than the longest stock (", MAX_LEN / 12, "'): ", TOO_LONG,
+        ". Add a longer length to stock_feet or make the house smaller."
+    )
+);
 
 function shown(layer) =
-  layer == "floor" ? show_floor
-  : layer == "subfloor" ? show_subfloor
-  : layer == "walls" ? show_walls
-  : layer == "roof" || layer == "ties" ? show_roof
-  : show_roof_sheathing;
+    layer == "floor" ? show_floor
+    : layer == "subfloor" ? show_subfloor
+    : layer == "walls" ? show_walls
+    : layer == "roof" || layer == "ties" ? show_roof
+    : show_roof_sheathing;
 
 if (part == "house") {
-  echo(str("The Tiny: ", length, " x ", width, " in, walls ", wall_height, " in, ", pitch, "/12 roof"));
-  echo(str("Top plates at ", H_TOP, " in; ridge board (", RIDGE, ") top at ", round(RIDGE_TOP * 100) / 100, " in"));
-  echo(str("Birdsmouth: seat ", round(SEAT * 100) / 100, " in, notch ", round(SEAT * pitch / 12 * 100) / 100, " in deep"));
-  cut_list(MEMBERS, LENGTHS);
-  if (list_members) for (m = MEMBERS) echo(str("MEMBER ", m));
-  for (m = MEMBERS) if (shown(m[2])) draw(m);
-} else assert(part == "none", str("part must be house or none, not ", part));
+    echo(str("The Tiny: ", length, " x ", width, " in, walls ", wall_height, " in, ", pitch, "/12 roof"));
+    echo(str("Top plates at ", H_TOP, " in; ridge board (", RIDGE, ") top at ", round(RIDGE_TOP * 100) / 100, " in"));
+    echo(str("Birdsmouth: seat ", round(SEAT * 100) / 100, " in, notch ", round(SEAT * pitch / 12 * 100) / 100, " in deep"));
+    cut_list(MEMBERS, LENGTHS);
+    if (list_members) for (m = MEMBERS) echo(str("MEMBER ", m));
+    for (m = MEMBERS) if (shown(m[2])) draw(m);
+}
+else
+    assert(part == "none", str("part must be house or none, not ", part));

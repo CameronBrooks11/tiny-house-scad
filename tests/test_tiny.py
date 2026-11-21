@@ -17,7 +17,8 @@ For each configuration it reads every member from the console
   - the birdsmouth notch is no deeper than a third of the rafter;
 then through tests/probe.scad that the sloped members (rafters, ties and
 roof sheathing) overlap nothing, and that every rafter sits on a plate.
-Finally, sizes that cannot be built fail with a message.
+Finally, sizes that cannot be built fail with a message, and each
+examples/*.scad renders with no WARNING or ERROR in its echo output.
 """
 
 import json
@@ -285,6 +286,11 @@ def main():
             os.path.exists(out) and os.remove(out)
             refused = any(l.startswith("ERROR") and message in l for l in text.splitlines())
             report(f"refuses {name}", refused, "refused" if refused else text.strip().splitlines()[-1:])
+        for f in sorted(f for f in os.listdir(os.path.join(ROOT, "examples")) if f.endswith(".scad")):
+            result = run(openscad, os.path.join(ROOT, "examples", f), out, {}, export="echo")
+            text = open(out).read() if os.path.exists(out) else ""
+            bad = [l for l in text.splitlines() if l.startswith(("WARNING", "ERROR"))]
+            report(f"examples/{f} renders", result.returncode == 0 and not bad, bad[0] if bad else text.splitlines()[0])
 
     print("all checks passed" if not failures else f"{len(failures)} failed")
     sys.exit(1 if failures else 0)
