@@ -2,6 +2,17 @@
 test:
     python3 tests/test_tiny.py
 
+# Everything CI runs, bar the tests
+check: fmt-check
+
+# Format the .scad sources with topiary (.topiary/languages.ncl)
+fmt:
+    git ls-files -z '*.scad' | xargs -0 -r topiary format
+
+# Check the .scad sources are formatted, without changing them
+fmt-check:
+    git ls-files -z '*.scad' | xargs -0 -r -n1 topiary format --check
+
 # Print the cut list, e.g. just cutlist -D length=192 -D width=90
 cutlist *ARGS:
     openscad --export-format echo -o - {{ARGS}} src/house.scad
