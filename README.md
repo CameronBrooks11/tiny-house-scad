@@ -4,9 +4,9 @@ A parametric tiny house frame in OpenSCAD: a floor platform, four stud walls
 and a gable roof. Set the size and the lumber, and it frames the house on a
 16 in grid and prints a cut list of what to buy.
 
-![The Tiny at its default 20' x 8'](images/house.png)
+![The Tiny at its default 20' x 8'](docs/img/house.png)
 
-![The frame without the roof sheathing](images/frame.png)
+![The frame without the roof sheathing](docs/img/frame.png)
 
 ## Use it
 
@@ -47,7 +47,7 @@ opening OpenSCAD. It buys one stick per piece at the shortest length that
 fits, and one sheet per sheet piece; it doesn't plan cutting several pieces
 from one stick.
 
-![End view: rafters, ridge board and ceiling tie](images/end.png)
+![End view: rafters, ridge board and ceiling tie](docs/img/end.png)
 
 ## How it's framed
 
@@ -74,7 +74,7 @@ Sizes that can't be built stop with a message, for example a width whose
 joists are longer than any stock, or a roof too low for the ties to pass
 under the ridge board.
 
-![The floor frame](images/floor.png)
+![The floor frame](docs/img/floor.png)
 
 ## Checks
 
